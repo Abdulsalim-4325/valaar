@@ -73,7 +73,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    void loadTasks();
+    const timeoutId = window.setTimeout(() => {
+      void loadTasks();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [loadTasks]);
 
   const counts = useMemo(
