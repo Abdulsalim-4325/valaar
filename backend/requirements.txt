@@ -4,3 +4,4 @@ pydantic-settings
 sqlalchemy[asyncio]
 mcp
 asyncpg
+boto3

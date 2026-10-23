@@ -213,3 +213,127 @@ h1 { margin: 15px 0 8px; font: 600 clamp(25px, 3vw, 34px)/1.2 'Space Grotesk', s
   .progress-ring-inner span { font-size: 8px; }
   .form-row { grid-template-columns: 1fr; gap: 0; }
 }
+
+/* V.A.L.A.A.R. AI Assistant */
+.assistant-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  min-height: 420px;
+}
+
+.assistant-heading h2 {
+  margin: 0.5rem 0;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+}
+
+.assistant-heading > p {
+  max-width: 680px;
+  color: var(--text-muted, #9a9aab);
+  line-height: 1.7;
+}
+
+.assistant-conversation {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.assistant-message,
+.assistant-error {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  border-radius: 14px;
+  overflow-wrap: anywhere;
+}
+
+.assistant-message-system {
+  background: var(--surface, rgba(255, 255, 255, 0.025));
+}
+
+.assistant-message > strong,
+.assistant-error > strong {
+  display: block;
+  margin-bottom: 0.45rem;
+}
+
+.assistant-message p,
+.assistant-error p {
+  margin: 0.35rem 0 0;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.assistant-response {
+  overflow-wrap: anywhere;
+}
+
+.assistant-error {
+  border-color: rgba(239, 100, 100, 0.45);
+  background: rgba(239, 100, 100, 0.06);
+}
+
+.assistant-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.assistant-form label {
+  font-weight: 600;
+}
+
+.assistant-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+  min-height: 88px;
+  padding: 0.9rem 1rem;
+  color: inherit;
+  background: var(--surface, rgba(255, 255, 255, 0.025));
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.14));
+  border-radius: 12px;
+  font: inherit;
+  line-height: 1.6;
+}
+
+.assistant-form textarea:focus-visible {
+  outline: 2px solid var(--accent, #a78bfa);
+  outline-offset: 2px;
+}
+
+.assistant-form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.assistant-form-footer > span {
+  color: var(--text-muted, #9a9aab);
+  font-size: 0.8rem;
+}
+
+.assistant-form button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .assistant-panel {
+    min-height: 360px;
+    padding: 1rem;
+  }
+
+  .assistant-form-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .assistant-form-footer button {
+    width: 100%;
+  }
+}

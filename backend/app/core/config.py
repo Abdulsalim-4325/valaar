@@ -12,7 +12,9 @@ class Settings(BaseSettings):
     app_version: str = "0.1.0"
     environment: str = "development"
     database_url: str
-    cors_origins: str = "http://localhost:3000"
+    cors_origins: str = "http://localhost:5173"
+    bedrock_region: str = "us-east-1"
+    bedrock_model_id: str = "global.anthropic.claude-sonnet-4-5-20250929-v1:0"
 
     model_config = SettingsConfigDict(
         env_file=BACKEND_DIR / ".env",

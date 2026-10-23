@@ -7,12 +7,13 @@ import {
 } from "./services/api";
 import "./App.css";
 
-type View = "Overview" | "My Tasks" | "Completed";
+type View = "Overview" | "My Tasks" | "Completed" | "AI Assistant";
 
 const navItems: { name: View; icon: string }[] = [
   { name: "Overview", icon: "◫" },
   { name: "My Tasks", icon: "☷" },
   { name: "Completed", icon: "✓" },
+  { name: "AI Assistant", icon: "✧" },
 ];
 
 const priorityLabels: Record<TaskPriority, string> = {
@@ -48,6 +49,10 @@ function App() {
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState<TaskPriority>("medium");
   const [newStatus, setNewStatus] = useState<TaskStatus>("todo");
+  const [chatInput, setChatInput] = useState("");
+  const [chatReply, setChatReply] = useState("");
+  const [chatError, setChatError] = useState("");
+  const [chatLoading, setChatLoading] = useState(false);
 
   const loadTasks = useCallback(async () => {
     setLoading(true);
@@ -164,6 +169,30 @@ function App() {
       setTasks((current) => current.filter((item) => item.id !== task.id));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not delete task.");
+    }
+  }
+
+  async function sendChat(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const message = chatInput.trim();
+    if (!message || chatLoading) return;
+
+    setChatLoading(true);
+    setChatError("");
+    setChatReply("");
+
+    try {
+      const result = await api.chat(message);
+      setChatReply(result.reply);
+      setChatInput("");
+    } catch (err) {
+      setChatError(
+        err instanceof Error
+          ? err.message
+          : "The AI assistant could not complete this request.",
+      );
+    } finally {
+      setChatLoading(false);
     }
   }
 
@@ -363,6 +392,77 @@ function App() {
                   </button>
                   <button className="primary-button" disabled={saving}>
                     {saving ? "Saving..." : "Create task →"}
+                  </button>
+                </div>
+              </form>
+            </section>
+          )}
+
+          {view === "AI Assistant" && (
+            <section className="assistant-panel panel">
+              <div className="assistant-heading">
+                <span className="eyebrow">V.A.L.A.A.R. INTELLIGENCE</span>
+                <h2>Your AI assistant</h2>
+                <p>
+                  Ask a question or get help thinking through your next task.
+                  Responses require a working Amazon Bedrock connection.
+                </p>
+              </div>
+
+              <div className="assistant-conversation" aria-live="polite">
+                <div className="assistant-message assistant-message-system">
+                  <strong>V.A.L.A.A.R.</strong>
+                  <p>
+                    Hello. Send a message below to start a conversation.
+                  </p>
+                </div>
+
+                {chatReply && (
+                  <div className="assistant-message">
+                    <strong>Assistant response</strong>
+                    <p className="assistant-response">{chatReply}</p>
+                  </div>
+                )}
+
+                {chatLoading && (
+                  <div className="assistant-message" role="status">
+                    <strong>Assistant</strong>
+                    <p>Waiting for the AI service...</p>
+                  </div>
+                )}
+
+                {chatError && (
+                  <div className="assistant-error" role="alert">
+                    <strong>Response unavailable</strong>
+                    <p>{chatError}</p>
+                    <p>
+                      No AI response was generated. Check the backend logs
+                      and Bedrock availability before retrying.
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <form className="assistant-form" onSubmit={sendChat}>
+                <label htmlFor="assistant-prompt">Your message</label>
+                <textarea
+                  id="assistant-prompt"
+                  value={chatInput}
+                  onChange={(event) => setChatInput(event.target.value)}
+                  placeholder="What would you like help with?"
+                  maxLength={4000}
+                  rows={3}
+                  required
+                  disabled={chatLoading}
+                />
+                <div className="assistant-form-footer">
+                  <span>{chatInput.length}/4000 characters</span>
+                  <button
+                    className="primary-button"
+                    type="submit"
+                    disabled={chatLoading || !chatInput.trim()}
+                  >
+                    {chatLoading ? "Thinking..." : "Send message →"}
                   </button>
                 </div>
               </form>

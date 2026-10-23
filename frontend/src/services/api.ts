@@ -63,8 +63,18 @@ async function request<T>(
   return response.json() as Promise<T>;
 }
 
+export interface ChatResponse {
+  reply: string;
+}
+
 export const api = {
   health: () => request<{ status: string }>("/api/v1/health"),
+
+  chat: (message: string) =>
+    request<ChatResponse>("/api/v1/chat", {
+      method: "POST",
+      body: JSON.stringify({ message }),
+    }),
 
   listTasks: () => request<Task[]>("/api/v1/tasks"),
 

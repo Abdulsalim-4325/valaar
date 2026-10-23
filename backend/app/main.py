@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
 from app.api.routes.tasks import router as tasks_router
+from app.api.routes.chat import router as chat_router
 from app.core.config import get_settings
 from app.db.base import Base
 from app.db.session import engine
@@ -43,6 +44,7 @@ app.add_middleware(
 )
 
 app.include_router(tasks_router)
+app.include_router(chat_router)
 
 
 @app.get("/", tags=["System"])
