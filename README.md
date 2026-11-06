@@ -1,6 +1,6 @@
 # V.A.L.A.A.R. — Your Personal AI Command Center
 
-V.A.L.A.A.R. is a personal command center combining task management, a web dashboard, and AI-agent tool integration.
+V.A.L.A.A.R.(Virtual AI Layer for Autonomous Agent Routing) is a personal command center combining task management, a web dashboard, and AI-agent tool integration.
 
 The project uses React, TypeScript, FastAPI, PostgreSQL, SQLAlchemy, and the Model Context Protocol (MCP).
 
